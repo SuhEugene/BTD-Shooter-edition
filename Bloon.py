@@ -15,12 +15,12 @@ class Bloon(pygame.sprite.Sprite):
         self.group = group
         self.group1 = group1
 
-        self.map = map_c()
+        self.map = map_c
         self.image = Bloon.image
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-        self.speed = 10
+        self.speed = 1
         self.alive = True
         self.rx = self.rect.x
         self.ry = self.rect.y
@@ -35,11 +35,15 @@ class Bloon(pygame.sprite.Sprite):
                 self.alive = False
                 pops.append(Pop(self.group, self.group1, self.rect.x, self.rect.y))
                 self.kill()
+        response = self.map.get((self.rect.x, self.rect.y))
+        if (response == "killed"):
+            self.alive = False
+            self.kill()
+        else:
+            dx, dy = response
 
-        dx, dy = self.map.get((self.rect.x, self.rect.y))
+            self.rx += dx * self.speed
+            self.ry += dy * self.speed
 
-        self.rx += dx
-        self.ry += dy
-
-        self.rect.x = int(self.rx)
-        self.rect.y = int(self.ry)
+            self.rect.x = int(self.rx)
+            self.rect.y = int(self.ry)

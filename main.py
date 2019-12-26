@@ -1,7 +1,10 @@
 import pygame
+import pygame.gfxdraw
 
-from Bloon import Bloon, bloons 
-from Pop import Pop, pops 
+import math
+
+from Bloon import Bloon, bloons
+from Pop import Pop, pops
 from Dart import Dart, darts
 from DartMonkey import DartMonkey
 
@@ -9,6 +12,10 @@ from Plains import Map
 
 
 pygame.init()
+
+pygame.font.init()
+myfont = pygame.font.SysFont('Calibri', 15)
+
 size = [800, 600]
 screen_rect = (0, 0, 800, 600)
 screen = pygame.display.set_mode(size)
@@ -17,16 +24,27 @@ done = False
 clock = pygame.time.Clock()
 
 
+def draw_arc (screen, color, center, radius, startDeg, endDeg, thickness):
+    (x, y) = center
+    rect = (x-radius, y-radius, radius*2, radius*2)
+    startRad = startDeg
+    endRad = endDeg
+
+    pygame.draw.arc(screen, color, rect, startRad, endRad, thickness)
+
+
 all_sprites = pygame.sprite.Group()
+bg_group = pygame.sprite.Group()
 darts_group = pygame.sprite.Group()
 bloons_group = pygame.sprite.Group()
 boxes = []
 player_group = pygame.sprite.Group()
 
-bloons = [Bloon(bloons_group, all_sprites, 150, 50, Map), Bloon(
-    bloons_group, all_sprites, 195, 50, Map), Bloon(bloons_group, all_sprites, 240, 50, Map)]
+main_map = Map(bg_group, all_sprites)
 
+bloons = [Bloon(bloons_group, all_sprites, -100, 172, main_map), Bloon(bloons_group, all_sprites, -150, 175, main_map), Bloon(bloons_group, all_sprites, -200, 180, main_map), Bloon(bloons_group, all_sprites, -250, 185, main_map), Bloon(bloons_group, all_sprites, -300, 190, main_map)]
 
+counter = 0
 
 mainMonkey = DartMonkey(player_group, all_sprites)
 speed = 5
@@ -45,7 +63,8 @@ while done == False:
             done = True
 
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
+            if event.button == 1 and counter <= 0:
+                counter = 60 * 1
                 darts.append(Dart(darts_group, all_sprites, mainMonkey.rect.x, mainMonkey.rect.y))
 
     for dart in darts:
@@ -59,7 +78,6 @@ while done == False:
 
     if pygame.key.get_pressed()[pygame.K_w]:
         mainMonkey.move(0, -speed)
-        darts.append(Dart(all_sprites, darts_group, mainMonkey.rect.x, mainMonkey.rect.y))
     if pygame.key.get_pressed()[pygame.K_s]:
         mainMonkey.move(0, speed)
     if pygame.key.get_pressed()[pygame.K_d]:
@@ -74,11 +92,20 @@ while done == False:
     x = pos[0]
     y = pos[1]
 
+    bg_group.draw(screen)
     darts_group.draw(screen)
     player_group.draw(screen)
     bloons_group.draw(screen)
 
+    counter -= 1
+
+    # textsurface = myfont.render(f'x: {x}, y: {y}', False, (0, 0, 0))
+    # screen.blit(textsurface, (0, 0))
+
     draw_cursor(screen, x - 10, y - 10)
+
+    draw_arc(screen, pygame.Color("black"), (200, 200), 20, 0, 120, 3)
+
     pygame.display.flip()
     clock.tick(60)
 
