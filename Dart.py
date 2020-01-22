@@ -39,7 +39,8 @@ class Dart(pygame.sprite.Sprite):
 
         self.rx, self.ry = self.rect.x, self.rect.y
 
-        self.image = pygame.transform.rotate(self.main_image, math.degrees(self.angle))
+        self.image = pygame.transform.rotate(
+            self.main_image, math.degrees(self.angle))
         rect = self.rect
         self.rect = self.image.get_rect(center=rect.center)
 
@@ -52,6 +53,7 @@ class Dart(pygame.sprite.Sprite):
 
         if not self.rect.colliderect(screen_rect):
             self.kill()
+        # print(darts)
 
     def shoot(self, kill):
         self.counter.add(kill)

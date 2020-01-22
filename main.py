@@ -24,7 +24,7 @@ done = False
 clock = pygame.time.Clock()
 
 
-def draw_arc (screen, color, center, radius, startDeg, endDeg, thickness):
+def draw_arc(screen, color, center, radius, startDeg, endDeg, thickness):
     (x, y) = center
     rect = (x-radius, y-radius, radius*2, radius*2)
     startRad = startDeg
@@ -42,14 +42,16 @@ player_group = pygame.sprite.Group()
 
 main_map = Map(bg_group, all_sprites)
 
-bloons = [Bloon(bloons_group, all_sprites, -100, 172, main_map), Bloon(bloons_group, all_sprites, -150, 175, main_map), Bloon(bloons_group, all_sprites, -200, 180, main_map), Bloon(bloons_group, all_sprites, -250, 185, main_map), Bloon(bloons_group, all_sprites, -300, 190, main_map)]
+bloons = [Bloon(bloons_group, all_sprites, -100, 172, main_map, 1), Bloon(bloons_group, all_sprites, -150, 175, main_map, 3), Bloon(bloons_group,
+                                                                                                                                    all_sprites, -200, 180, main_map, 1), Bloon(bloons_group, all_sprites, -250, 185, main_map, 2), Bloon(bloons_group, all_sprites, -300, 190, main_map)]
 
 counter = 0
 
 mainMonkey = DartMonkey(player_group, all_sprites)
 speed = 5
 
-cursor = pygame.transform.scale(pygame.image.load('data/crosshair.png').convert_alpha(), (20, 20))
+cursor = pygame.transform.scale(pygame.image.load(
+    'data/crosshair.png').convert_alpha(), (20, 20))
 
 
 def draw_cursor(screen, x, y):
@@ -65,7 +67,8 @@ while done == False:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1 and counter <= 0:
                 counter = 60 * 1
-                darts.append(Dart(darts_group, all_sprites, mainMonkey.rect.x, mainMonkey.rect.y))
+                darts.append(Dart(darts_group, all_sprites,
+                                  mainMonkey.rect.x, mainMonkey.rect.y))
 
     for dart in darts:
         dart.move()
