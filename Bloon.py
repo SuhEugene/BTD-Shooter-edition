@@ -59,7 +59,7 @@ class Bloon(pygame.sprite.Sprite):
         if not self.alive:
             return
         for dart in darts:
-            if pygame.sprite.collide_mask(self, dart):
+            if pygame.sprite.collide_mask(self, dart) and dart.alive:
                 dart.shoot(self)
                 if self.bloon == 3:
                     self.image = Bloon.image_2
@@ -86,8 +86,8 @@ class Bloon(pygame.sprite.Sprite):
         else:
             dx, dy = response
 
-            self.rx += dx * self.bloon * 1.1
-            self.ry += dy * self.bloon * 1.1
+            self.rx += dx * (self.bloon % 5) * 1.1
+            self.ry += dy * (self.bloon % 5) * 1.1
 
             self.rect.x = int(self.rx)
             self.rect.y = int(self.ry)

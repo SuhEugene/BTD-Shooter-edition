@@ -20,6 +20,7 @@ class Dart(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x + 25
         self.rect.y = y + 25
+        self.alive = True
         self.speed = 10
         self.counter = set()
         angle = math.atan2(pygame.mouse.get_pos()[0] - self.rect.x + 1.5,
@@ -52,10 +53,12 @@ class Dart(pygame.sprite.Sprite):
         self.rect.y = int(self.ry)
 
         if not self.rect.colliderect(screen_rect):
+            self.alive = False
             self.kill()
         # print(darts)
 
     def shoot(self, kill):
         self.counter.add(kill)
         if len(self.counter) == 3:
+            self.alive = False
             self.kill()
