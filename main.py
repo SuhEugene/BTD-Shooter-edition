@@ -52,6 +52,7 @@ speed = 5
 cursor = pygame.transform.scale(pygame.image.load(
     'data/crosshair.png').convert_alpha(), (20, 20))
 
+
 def spawn(arr):
     x, y = -100, 170
     for i in range(len(arr)):
@@ -59,17 +60,19 @@ def spawn(arr):
         x -= 50
         y += 3
 
+
 def draw_cursor(screen, x, y):
     if pygame.mouse.get_focused():
         screen.blit(cursor, (x, y))
 
-spawn([1,1,1,1,1,3,3,3,3,3,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,3,3,3,3,3,3,3,3,3,3,3,3,3,3])
+
+spawn([1, 1, 1, 2, 3, 4, 5, 6, 3, 7, 7, 2, 2, 8, 2, 1, 1, 1, 1, 1, 8,
+       1, 1, 9, 1, 1, 1, 3, 9, 3, 10, 3, 3, 3, 3, 3, 3, 3, 3, 10, 3])
 cooldown = 0
 while done == False:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
-
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1 and cooldown >= 1:
@@ -113,7 +116,8 @@ while done == False:
     # screen.blit(textsurface, (0, 0))
 
     draw_cursor(screen, x - 10, y - 10)
-    draw_arc(screen, pygame.Color("black"), (x, y), 17, 3.15/2, 3.15 * 2 * cooldown + 3.15/2, 2)
+    draw_arc(screen, pygame.Color("black"), (x, y), 17,
+             3.15/2, 3.15 * 2 * cooldown + 3.15/2, 2)
 
     pygame.display.flip()
     clock.tick(60)

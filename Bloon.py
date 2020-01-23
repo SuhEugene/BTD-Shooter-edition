@@ -1,9 +1,8 @@
-import pygame
-from Dart import darts
 from Pop import pops, Pop
+from Dart import darts
+import pygame
 pygame.init()
 pygame.display.set_mode([1000, 1000])
-
 bloons = []
 
 
@@ -11,6 +10,13 @@ class Bloon(pygame.sprite.Sprite):
     image_1 = pygame.image.load("data/Bloon_1.png").convert_alpha()
     image_2 = pygame.image.load("data/Bloon_2.png").convert_alpha()
     image_3 = pygame.image.load("data/Bloon_3.png").convert_alpha()
+    image_4 = pygame.image.load("data/Bloon_4.png").convert_alpha()
+    image_5 = pygame.image.load("data/Bloon_5.png").convert_alpha()
+    image_6 = pygame.image.load("data/HBloon_1.png").convert_alpha()
+    image_7 = pygame.image.load("data/HBloon_2.png").convert_alpha()
+    image_8 = pygame.image.load("data/HBloon_3.png").convert_alpha()
+    image_9 = pygame.image.load("data/HBloon_4.png").convert_alpha()
+    image_10 = pygame.image.load("data/HBloon_5.png").convert_alpha()
 
     def __init__(self, group, group1, x, y, map_c, what_bloon=1):
         super().__init__(group, group1)
@@ -27,6 +33,20 @@ class Bloon(pygame.sprite.Sprite):
             self.image = Bloon.image_2
         elif what_bloon == 3:
             self.image = Bloon.image_3
+        elif what_bloon == 4:
+            self.image = Bloon.image_4
+        elif what_bloon == 5:
+            self.image = Bloon.image_5
+        elif what_bloon == 6:
+            self.image = Bloon.image_6
+        elif what_bloon == 7:
+            self.image = Bloon.image_7
+        elif what_bloon == 8:
+            self.image = Bloon.image_8
+        elif what_bloon == 9:
+            self.image = Bloon.image_9
+        elif what_bloon == 10:
+            self.image = Bloon.image_10
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
