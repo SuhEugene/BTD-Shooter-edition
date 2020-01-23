@@ -29,8 +29,8 @@ def draw_arc(screen, color, center, radius, startDeg, endDeg, thickness):
     rect = (x-radius, y-radius, radius*2, radius*2)
     startRad = startDeg
     endRad = endDeg
-
-    pygame.draw.arc(screen, color, rect, startRad, endRad, thickness)
+    if pygame.mouse.get_focused():
+        pygame.draw.arc(screen, color, rect, startRad, endRad, thickness)
 
 
 all_sprites = pygame.sprite.Group()
@@ -42,8 +42,7 @@ player_group = pygame.sprite.Group()
 
 main_map = Map(bg_group, all_sprites)
 
-bloons = [Bloon(bloons_group, all_sprites, -100, 172, main_map, 1), Bloon(bloons_group, all_sprites, -150, 175, main_map, 3), Bloon(bloons_group,
-                                                                                                                                    all_sprites, -200, 180, main_map, 1), Bloon(bloons_group, all_sprites, -250, 185, main_map, 2), Bloon(bloons_group, all_sprites, -300, 190, main_map)]
+bloons = []
 
 counter = 0
 
@@ -53,22 +52,32 @@ speed = 5
 cursor = pygame.transform.scale(pygame.image.load(
     'data/crosshair.png').convert_alpha(), (20, 20))
 
+def spawn(arr):
+    x, y = -100, 170
+    for i in range(len(arr)):
+        bloons.append(Bloon(bloons_group, all_sprites, x, y, main_map, arr[i]))
+        x -= 50
+        y += 3
 
 def draw_cursor(screen, x, y):
     if pygame.mouse.get_focused():
         screen.blit(cursor, (x, y))
 
-
+spawn([1,1,1,1,1,3,3,3,3,3,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,3,3,3,3,3,3,3,3,3,3,3,3,3,3])
+cooldown = 0
 while done == False:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
 
+
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1 and counter <= 0:
-                counter = 60 * 1
+            if event.button == 1 and cooldown >= 1:
+                cooldown = 0
                 darts.append(Dart(darts_group, all_sprites,
                                   mainMonkey.rect.x, mainMonkey.rect.y))
+    if (cooldown <= 1):
+        cooldown += 0.01
 
     for dart in darts:
         dart.move()
@@ -100,14 +109,11 @@ while done == False:
     player_group.draw(screen)
     bloons_group.draw(screen)
 
-    counter -= 1
-
     # textsurface = myfont.render(f'x: {x}, y: {y}', False, (0, 0, 0))
     # screen.blit(textsurface, (0, 0))
 
     draw_cursor(screen, x - 10, y - 10)
-
-    draw_arc(screen, pygame.Color("black"), (200, 200), 20, 0, 120, 3)
+    draw_arc(screen, pygame.Color("black"), (x, y), 17, 3.15/2, 3.15 * 2 * cooldown + 3.15/2, 2)
 
     pygame.display.flip()
     clock.tick(60)
