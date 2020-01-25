@@ -10,7 +10,6 @@ from Dart import Dart, darts
 from DartMonkey import DartMonkey
 from Plains import Map
 
-
 pygame.init()
 
 pygame.font.init()
@@ -21,11 +20,13 @@ screen_rect = (0, 0, 800, 600)
 screen = pygame.display.set_mode(size)
 done = False
 clock = pygame.time.Clock()
+pygame.mixer.music.load("data/Music.mp3")
+pygame.mixer.music.play(loops=-1)
 
 
 def draw_arc(screen, color, center, radius, startDeg, endDeg, thickness):
     (x, y) = center
-    rect = (x-radius, y-radius, radius*2, radius*2)
+    rect = (x - radius, y - radius, radius * 2, radius * 2)
     startRad = startDeg
     endRad = endDeg
     if pygame.mouse.get_focused():
@@ -76,7 +77,8 @@ def spawn():
             btype = 4
         elif random <= 750:
             btype = 5
-        bloons.append(Bloon(bloons_group, all_sprites, -100, 170, main_map, btype))
+        bloons.append(Bloon(bloons_group, all_sprites,
+                            - 100, 170, main_map, btype))
         if (spawnrate > 5):
             spawnrate -= 0.01
 
@@ -131,7 +133,8 @@ while done == False:
 
     # Пересчёт по убитым шарам жизней и деняк
     life = 30 - sum([b.over for b in bloons]) + additional_lives
-    points = int(sum([0.3 for b in bloons if ((not b.alive) and b.over == 0)])) - spend
+    points = int(
+        sum([0.3 for b in bloons if ((not b.alive) and b.over == 0)])) - spend
 
     # [W][A][S][D]
     if life + additional_lives > 0:
@@ -183,7 +186,7 @@ while done == False:
         pygame.mouse.set_visible(0)
         draw_cursor(screen, x - 10, y - 10)
         draw_arc(screen, pygame.Color("black"), (x, y), 17,
-                 3.15/2, 3.15 * 2 * cooldown + 3.15/2, 2)
+                 3.15 / 2, 3.15 * 2 * cooldown + 3.15 / 2, 2)
     else:
         # Если сдох, то выводим тексты + очки
         pygame.mouse.set_visible(1)
