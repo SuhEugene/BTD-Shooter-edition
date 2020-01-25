@@ -20,6 +20,9 @@ class DartMonkey(pygame.sprite.Sprite):
         self.angle = 0
 
     def move(self, x, y):
+        if (self.rect.x + x < -20 or self.rect.y + y < -20 or
+                self.rect.x + x + 50 > 820 or self.rect.y + y + 50 > 620):
+            return
         self.rect = self.rect.move(x, y)
 
     def angle_rot(self):
